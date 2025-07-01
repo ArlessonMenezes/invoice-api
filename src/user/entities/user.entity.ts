@@ -1,5 +1,6 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
+import { Invoice } from "src/invoice/entities/invoice.entity";
 
 @Entity('users')
 export class User {
@@ -14,6 +15,9 @@ export class User {
 
   @Column()
   name: string;
+
+  @OneToMany(() => Invoice, invoice => invoice.user)
+  invoices: Invoice[];
 
   @BeforeInsert()
   async hashPassword() {

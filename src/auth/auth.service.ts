@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
@@ -18,13 +18,14 @@ export class AuthService {
     if (!matchPassword) return null;
 
     const { password, ...result } = user;
-
+    console.log('result user: ', result)
     return result;
   };
 
   async login(user: any) {
-    const payload = { email: user.email, sub: user.idUser };
-
+    const { idUser, email } = user.user;
+    const payload = { sub: idUser, email };
+    
     return {
       access_token: this.jwtService.sign(payload),
     };
